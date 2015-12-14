@@ -7,7 +7,7 @@ import java.util.GregorianCalendar;
 import java.util.Properties;
 import bmi.BMI;
 
-public class HamonEtp implements BMI {
+public class Hamon_BMI implements BMI {
 
     final static int[] DAYS = {
         31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31

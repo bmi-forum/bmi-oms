@@ -7,7 +7,7 @@ package oms_bmi;
 
 import bmi.BMI;
 import java.util.Arrays;
-import tw.HamonET;
+import tw.Hamon_OMS;
 
 /**
  *
@@ -17,7 +17,7 @@ public class HamonBMI {
 
     public static void main(String[] args) throws Exception {
 
-        BMI bmi = BMIComponent.create(new HamonET());
+        BMI bmi = BMIComponent.create(new Hamon_OMS());
 
         System.out.println("The name of the component is " + bmi.getComponentName());
         System.out.println("The input variable names are " + Arrays.toString(bmi.getInputVarNames()));

@@ -25,7 +25,7 @@ import java.util.Calendar;
 @License
     ("http://www.gnu.org/licenses/gpl-2.0.html")
 
-public class HamonET {
+public class Hamon_OMS {
     // the number of days per months
     final static int[] DAYS = {
         31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31
