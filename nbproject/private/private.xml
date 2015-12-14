@@ -12,5 +12,9 @@
             <file>file:/od/projects/oms_bmi/src/tw/HamonET.java</file>
         </group>
         <group name="oms_core"/>
+        <group>
+            <file>file:/home/francesco/vcs/git/bmi-oms/src/oms_bmi/HamonOms.java</file>
+            <file>file:/home/francesco/vcs/git/bmi-oms/src/oms_bmi/HamonBMI.java</file>
+        </group>
     </open-files>
 </project-private>

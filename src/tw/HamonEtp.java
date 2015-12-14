@@ -3,6 +3,7 @@ package tw;
 import java.io.FileInputStream;
 
 import java.util.Calendar;
+import java.util.GregorianCalendar;
 import java.util.Properties;
 import bmi.BMI;
 
@@ -27,10 +28,48 @@ public class HamonEtp implements BMI {
                 props.load(fis);
                 temp = Double.parseDouble(props.getProperty("temp"));
                 daylen = Double.parseDouble(props.getProperty("daylen"));
+                setInputDate(props.getProperty("time"));
             }
         }
     }
 
+    private void setInputDate(final String date) {
+
+        if (date.indexOf('T') != -1) setDateAndTime(date);
+        else setDate(date);
+
+    }
+
+    private void setDateAndTime(final String date) {
+
+        String[] dateTime = date.split("T");
+        String[] dateVec = dateTime[0].split("-");
+        String[] timeVec = dateTime[1].split(":");
+
+        if (timeVec.length < 3)
+            time = new GregorianCalendar(Integer.parseInt(dateVec[0]),
+                                         Integer.parseInt(dateVec[1]),
+                                         Integer.parseInt(dateVec[2]),
+                                         Integer.parseInt(timeVec[0]),
+                                         Integer.parseInt(timeVec[1]));
+        else
+            time = new GregorianCalendar(Integer.parseInt(dateVec[0]),
+                                         Integer.parseInt(dateVec[1]),
+                                         Integer.parseInt(dateVec[2]),
+                                         Integer.parseInt(timeVec[0]),
+                                         Integer.parseInt(timeVec[1]),
+                                         Integer.parseInt(timeVec[2]));
+
+    }
+
+    private void setDate(final String date) {
+
+         String[] dateVec = date.split("-");
+         time = new GregorianCalendar(Integer.parseInt(dateVec[0]),
+                                      Integer.parseInt(dateVec[1]),
+                                      Integer.parseInt(dateVec[2]));
+
+    }
 
     @Override
     public void update() {
@@ -51,6 +90,7 @@ public class HamonEtp implements BMI {
 
     @Override
     public void finalize() {
+        System.out.println(potET);
     }
 
 

@@ -20,8 +20,8 @@ public class OMSComponent {
 
 
     @Initialize
-    public void init() throws Exception {
-        comp.initialize("inputs.properties");
+    public void init(String conf_file) throws Exception {
+        comp.initialize(conf_file);
     }
 
 
