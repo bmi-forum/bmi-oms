@@ -1,8 +1,8 @@
-package oms_bmi;
+package tw;
 
-import tw.Hamon_BMI;
+import oms_bmi.OMSComponent;
 
-public class HamonOms {
+public class Hamon_BMI2OMS {
 
     public static void main(String[] args) throws Exception {
 

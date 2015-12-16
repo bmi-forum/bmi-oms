@@ -3,17 +3,17 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package oms_bmi;
+package tw;
 
 import bmi.BMI;
 import java.util.Arrays;
-import tw.Hamon_OMS;
+import oms_bmi.BMIComponent;
 
 /**
  *
  * @author od
  */
-public class HamonBMI {
+public class Hamon_OMS2BMI {
 
     public static void main(String[] args) throws Exception {
 
