@@ -3,12 +3,12 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package oms_bmi;
+package tw;
 
 import java.util.Arrays;
 
 import edu.colorado.csdms.bmi.BMI;
-import tw.Hamon_OMS;
+import oms_bmi.BMIComponent;
 
 /**
  *
