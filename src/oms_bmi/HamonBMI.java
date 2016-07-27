@@ -5,8 +5,9 @@
  */
 package oms_bmi;
 
-import bmi.BMI;
 import java.util.Arrays;
+
+import edu.colorado.csdms.bmi.BMI;
 import tw.Hamon_OMS;
 
 /**
@@ -25,9 +26,13 @@ public class HamonBMI {
         System.out.println("The input variable count is " + bmi.getInputVarNameCount());
         System.out.println("The output variable count is " + bmi.getOutputVarNameCount());
 
-        bmi.setValue("temp", 25.3);
-        bmi.setValue("daylen", 8);
-        bmi.setValue("time", "04-03-2014");
+        double[] temp = {25.3};
+        int[] daylen = {8};
+        String[] time = {"04-03-2014"};
+
+        bmi.setValue("temp", temp);
+        bmi.setValue("daylen", daylen);
+        bmi.setValue("time", time);
 
         bmi.initialize(null);
         bmi.update();

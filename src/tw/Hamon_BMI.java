@@ -1,11 +1,12 @@
 package tw;
 
 import java.io.FileInputStream;
-
+import java.io.IOException;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.Properties;
-import bmi.BMI;
+
+import edu.colorado.csdms.bmi.BMI;
 
 public class Hamon_BMI implements BMI {
 
@@ -20,7 +21,7 @@ public class Hamon_BMI implements BMI {
 
 
     @Override
-    public void initialize(String config_file) throws Exception {
+    public void initialize(String config_file) {
         if (config_file != null) {
             Properties props;
             try (FileInputStream fis = new FileInputStream(config_file)) {
@@ -29,6 +30,8 @@ public class Hamon_BMI implements BMI {
                 temp = Double.parseDouble(props.getProperty("temp"));
                 daylen = Double.parseDouble(props.getProperty("daylen"));
                 setInputDate(props.getProperty("time"));
+            } catch (IOException exception) {
+                System.out.println(exception.getMessage());
             }
         }
     }
@@ -124,38 +127,35 @@ public class Hamon_BMI implements BMI {
     }
 
 
+    @SuppressWarnings("unchecked")
     @Override
-    public Object getValue(String name) throws Exception {
-        if (name.equals("potet")) {
-            return potET;
-        }
-        throw new IllegalArgumentException(name);
+    public Object getValue(String name) {
+        // try (name.equals("potet")) {
+        //     return potET;
+        // } catch(IOException exception) {
+        //     System.out.println(exception.getMessage());
+        // }
+        throw new UnsupportedOperationException();
     }
 
 
     @Override
-    public void setValue(String name, Object value) throws Exception {
+    public void setValue(String name, double[] value) {
         if (name.equals("temp")) {
-            temp = Double.parseDouble(value.toString());
-        }
-        if (name.equals("daylen")) {
-            daylen = Double.parseDouble(value.toString());
-        } else {
-            throw new IllegalArgumentException(name);
+            temp = value[0];
         }
     }
 
+    @Override
+    public void setValue(String name, int[] value) {
+        if (name.equals("daylen")) {
+            daylen = value[0];
+        }
+    }
 
     @Override
     public String getVarType(String name) {
         return "double";
-    }
-
-
-    @Override
-    public long getVarItemsize(String name) {
-        // this is more involved here ... 
-        return 0;
     }
 
 
@@ -171,31 +171,170 @@ public class Hamon_BMI implements BMI {
 
 
     @Override
-    public void getCurrentTime(double time) {
-    }
+    public void initialize() {
+        // TODO Auto-generated method stub
 
-
-    @Override
-    public void getStartTime(double time) {
-    }
-
-
-    @Override
-    public void getEndTime(double end) {
-    }
-
-
-    @Override
-    public void getTimeStep(double dt) {
-    }
-
-
-    @Override
-    public void getTimeUnits(String units) {
     }
 
     @Override
-    public String getGridType() {
+    public void updateFrac(double arg0) {
+        // TODO Auto-generated method stub
+
+    }
+
+    @Override
+    public void updateUntil(double arg0) {
+        // TODO Auto-generated method stub
+
+    }
+
+    @Override
+    public double getCurrentTime() {
+        // TODO Auto-generated method stub
+        return 0;
+    }
+
+    @Override
+    public double getEndTime() {
+        // TODO Auto-generated method stub
+        return 0;
+    }
+
+    @Override
+    public double getStartTime() {
+        // TODO Auto-generated method stub
+        return 0;
+    }
+
+    @Override
+    public double getTimeStep() {
+        // TODO Auto-generated method stub
+        return 0;
+    }
+
+    @Override
+    public String getTimeUnits() {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    @Override
+    public int getVarGrid(String arg0) {
+        // TODO Auto-generated method stub
+        return 0;
+    }
+
+    @Override
+    public int getVarNbytes(String arg0) {
+        // TODO Auto-generated method stub
+        return 0;
+    }
+
+    @Override
+    public <T> T getValueAtIndices(String arg0, int[] arg1) {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    @Override
+    public <T> T getValueRef(String arg0) {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    @Override
+    public void setValue(String arg0, String[] arg1) {
+        // TODO Auto-generated method stub
+
+    }
+
+    @Override
+    public void setValueAtIndices(String arg0, int[] arg1, double[] arg2) {
+        // TODO Auto-generated method stub
+
+    }
+
+    @Override
+    public void setValueAtIndices(String arg0, int[] arg1, int[] arg2) {
+        // TODO Auto-generated method stub
+
+    }
+
+    @Override
+    public void setValueAtIndices(String arg0, int[] arg1, String[] arg2) {
+        // TODO Auto-generated method stub
+
+    }
+
+    @Override
+    public int[] getGridShape(int arg0) {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    @Override
+    public double[] getGridX(int arg0) {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    @Override
+    public double[] getGridY(int arg0) {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    @Override
+    public double[] getGridZ(int arg0) {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    @Override
+    public int getGridRank(int arg0) {
+        // TODO Auto-generated method stub
+        return 0;
+    }
+
+    @Override
+    public int getGridSize(int arg0) {
+        // TODO Auto-generated method stub
+        return 0;
+    }
+
+    @Override
+    public String getGridType(int arg0) {
+        // TODO Auto-generated method stub
         return "scalar";
+    }
+
+    @Override
+    public double[] getGridOrigin(int arg0) {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    @Override
+    public double[] getGridSpacing(int arg0) {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    @Override
+    public int[] getGridConnectivity(int arg0) {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    @Override
+    public int[] getGridOffset(int arg0) {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    @Override
+    public int getVarItemsize(String arg0) {
+        // TODO Auto-generated method stub
+        return 0;
     }
 }

@@ -18,10 +18,14 @@
  */
 package oms_bmi;
 
-import bmi.BMI;
+import java.io.FileNotFoundException;
 import java.io.FileReader;
+import java.io.IOException;
 import java.io.Reader;
 import java.util.Properties;
+
+import edu.colorado.csdms.bmi.BMI;
+
 import oms3.Access;
 import oms3.ComponentAccess;
 import oms3.Conversions;
@@ -30,12 +34,12 @@ import oms3.annotations.*;
 /**
  * BMI wrapper for an OMS component.
  *
- * @author od, archita
+ * @author od, archita, sidereus
  */
 public class BMIComponent implements BMI {
 
     ComponentAccess comp;
-
+    String message = "Method not implemented yet";
 
     BMIComponent(Object omscomp) {
         comp = new ComponentAccess(omscomp);
@@ -49,20 +53,38 @@ public class BMIComponent implements BMI {
 
 
     @Override
-    public void initialize(String config_file) throws Exception {
+    public void initialize(String config_file) {
         if (config_file != null) {
-            Reader r = new FileReader(config_file);
-            Properties p = new Properties();
-            p.load(r);
-            for (String name : p.stringPropertyNames()) {
-                Access a = comp.input(name);
-                Object o = Conversions.convert(p.getProperty(name), a.getField().getType());
-                a.setFieldValue(o);
+            Reader r = null;
+            try {
+                r = new FileReader(config_file);
+            } catch(FileNotFoundException exception) {
+                System.out.println(exception.getMessage());
             }
-            r.close();
+
+            Properties p = new Properties();
+            try {
+                p.load(r);
+                for (String name : p.stringPropertyNames()) {
+                    Access a = comp.input(name);
+                    Object o = Conversions.convert(p.getProperty(name), a.getField().getType());
+                    a.setFieldValue(o);
+                }
+                r.close();
+            } catch(IOException exception) {
+                System.out.println(exception.getMessage());
+            } catch(Exception exception) {
+                System.out.println(exception.getMessage());
+            }
+
         }
         ComponentAccess.callAnnotated(comp.getComponent(), Initialize.class, true);
 
+    }
+
+    @Override
+    public void initialize() {
+        throw new UnsupportedOperationException(message);
     }
 
 
@@ -112,25 +134,43 @@ public class BMIComponent implements BMI {
     }
 
 
+    @SuppressWarnings("unchecked")
     @Override
-    public Object getValue(String name) throws Exception {
+    public Object getValue(String name) {
         Access a = comp.output(name);
-        if (a == null) {
-            throw new IllegalArgumentException("No such name " + name);
+        Object returningObject = null;
+
+        try {
+            returningObject = a.getField().get(comp.getComponent());
+        } catch (IllegalAccessException exception) {
+            System.out.println(exception.getMessage());
+            System.exit(1);
         }
-        return a.getField().get(comp.getComponent());
+
+        return returningObject;
     }
 
 
     @Override
-    public void setValue(String name, Object value) throws Exception {
+    public void setValue(String name, double[] src) {
         Access a = comp.input(name);
-        if (a == null) {
-            throw new IllegalArgumentException("No such name " + name);
+
+        try {
+            a.getField().set(comp.getComponent(), Conversions.convert(src, a.getField().getType()));
+        } catch (IllegalAccessException exception) {
+            System.out.println(exception.getMessage());
         }
-        a.getField().set(comp.getComponent(), Conversions.convert(value, a.getField().getType()));
     }
 
+    @Override
+    public void setValue(String varName, int[] src) {
+        throw new UnsupportedOperationException(message);
+    }
+
+    @Override
+    public void setValue(String varName, String[] src) {
+        throw new UnsupportedOperationException(message);
+    }
 
     private String[] toString(Access[] a) {
         String[] s = new String[a.length];
@@ -152,9 +192,9 @@ public class BMIComponent implements BMI {
 
 
     @Override
-    public long getVarItemsize(String name) {
+    public int getVarItemsize(String name) {
         // this is more involved here ... 
-        return 0;
+        throw new UnsupportedOperationException(message);
     }
 
 
@@ -170,32 +210,128 @@ public class BMIComponent implements BMI {
 
 
     @Override
-    public void getCurrentTime(double time) {
+    public double getCurrentTime() {
+        throw new UnsupportedOperationException(message);
     }
-
 
     @Override
-    public void getStartTime(double time) {
+    public double getStartTime() {
+        throw new UnsupportedOperationException(message);
     }
-
 
     @Override
-    public void getEndTime(double end) {
+    public double getEndTime() {
+        throw new UnsupportedOperationException(message);
     }
-
 
     @Override
-    public void getTimeStep(double dt) {
+    public double getTimeStep() {
+        throw new UnsupportedOperationException(message);
     }
-
 
     @Override
-    public void getTimeUnits(String units) {
+    public String getTimeUnits() {
+        throw new UnsupportedOperationException(message);
     }
-
 
     @Override
-    public String getGridType() {
-        return "scalar";
+    public String getGridType(final int gridId) {
+        throw new UnsupportedOperationException(message);
     }
+
+    @Override
+    public int[] getGridConnectivity(int gridId) {
+        throw new UnsupportedOperationException(message);
+    }
+
+    @Override
+    public double[] getGridX(int gridId) {
+        throw new UnsupportedOperationException(message);
+    }
+
+    @Override
+    public double[] getGridY(int gridId) {
+        throw new UnsupportedOperationException(message);
+    }
+
+    @Override
+    public double[] getGridZ(int gridId) {
+        throw new UnsupportedOperationException(message);
+    }
+
+    @Override
+    public int[] getGridOffset(int gridId) {
+        throw new UnsupportedOperationException(message);
+    }
+
+    @Override
+    public int getGridRank(int gridId) {
+        throw new UnsupportedOperationException(message);
+    }
+
+    @Override
+    public int getGridSize(int gridId) {
+        throw new UnsupportedOperationException(message);
+    }
+
+    @Override
+    public void updateFrac(double timeFrac) {
+        throw new UnsupportedOperationException(message);
+    }
+
+    @Override
+    public void setValueAtIndices(String varName, int[] indices, int[] src) {
+        throw new UnsupportedOperationException(message);
+    }
+
+    @Override
+    public void setValueAtIndices(String varName, int[] indices, double[] src) {
+        throw new UnsupportedOperationException(message);
+    }
+
+    @Override
+    public void setValueAtIndices(String varName, int[] indices, String[] src) {
+        throw new UnsupportedOperationException(message);
+    }
+
+    @Override
+    public int[] getGridShape(int gridId) {
+        throw new UnsupportedOperationException(message);
+    }
+
+    @Override
+    public void updateUntil(double time) {
+        throw new UnsupportedOperationException(message);
+    }
+
+    @Override
+    public <T> T getValueRef(String varName) {
+        throw new UnsupportedOperationException(message);
+    }
+
+    @Override
+    public <T> T getValueAtIndices(String varName, int[] indices) {
+        throw new UnsupportedOperationException(message);
+    }
+
+    @Override
+    public int getVarGrid(String varName) {
+        throw new UnsupportedOperationException(message);
+    }
+
+    @Override
+    public int getVarNbytes(String varName) {
+        throw new UnsupportedOperationException(message);
+    }
+
+    @Override
+    public double[] getGridOrigin(int gridId) {
+        throw new UnsupportedOperationException(message);
+    }
+
+    @Override
+    public double[] getGridSpacing(int gridId) {
+        throw new UnsupportedOperationException(message);
+    }
+
 }

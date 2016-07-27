@@ -18,7 +18,8 @@
  */
 package oms_bmi;
 
-import bmi.BMI;
+import edu.colorado.csdms.bmi.BMI;
+
 import oms3.annotations.Execute;
 import oms3.annotations.Finalize;
 import oms3.annotations.Initialize;
