@@ -37,6 +37,6 @@ public class HamonBMI {
         bmi.initialize(null);
         bmi.update();
 
-        System.out.println(bmi.getValue("potET"));
+        System.out.println(bmi.getValue("potET").toString());
     }
 }
