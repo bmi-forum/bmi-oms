@@ -7,6 +7,9 @@ package tw;
 
 import java.util.Arrays;
 
+import org.junit.Test;
+import static org.junit.Assert.assertEquals;
+
 import edu.colorado.csdms.bmi.BMI;
 import oms_bmi.BMIComponent;
 
@@ -14,9 +17,10 @@ import oms_bmi.BMIComponent;
  *
  * @author od
  */
-public class HamonBMI {
+public class BMIwrapperTest {
 
-    public static void main(String[] args) throws Exception {
+    @Test
+    public void bmiWrapper() {
 
         BMI bmi = BMIComponent.create(new Hamon_OMS());
 
@@ -37,6 +41,9 @@ public class HamonBMI {
         bmi.initialize(null);
         bmi.update();
 
-        System.out.println(bmi.getValue("potET").toString());
+        Double result = bmi.getValue("potET");
+        Double correct = 44.25625552713055;
+        System.out.println(result);
+        assertEquals(result, correct);
     }
 }

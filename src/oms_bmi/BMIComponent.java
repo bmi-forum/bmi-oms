@@ -22,6 +22,7 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.Reader;
+import java.lang.reflect.Field;
 import java.util.Properties;
 
 import edu.colorado.csdms.bmi.BMI;
@@ -144,32 +145,50 @@ public class BMIComponent implements BMI {
             returningObject = a.getField().get(comp.getComponent());
         } catch (IllegalAccessException exception) {
             System.out.println(exception.getMessage());
-            System.exit(1);
         }
 
         return returningObject;
     }
 
-
-    @Override
-    public void setValue(String name, double[] src) {
+    private void genericSetValue(String name, Object src) {
         Access a = comp.input(name);
 
         try {
-            a.getField().set(comp.getComponent(), Conversions.convert(src, a.getField().getType()));
+            Field field = a.getField();
+            field.set(comp.getComponent(), Conversions.convert(src, a.getField().getType()));
         } catch (IllegalAccessException exception) {
             System.out.println(exception.getMessage());
         }
     }
 
-    @Override
-    public void setValue(String varName, int[] src) {
-        throw new UnsupportedOperationException(message);
+    private void setValue(String name, double src) {
+        genericSetValue(name, src);
+    }
+
+    private void setValue(String name, int src) {
+        genericSetValue(name, src);
+    }
+
+    private void setValue(String name, String src) {
+        genericSetValue(name, src);
     }
 
     @Override
-    public void setValue(String varName, String[] src) {
-        throw new UnsupportedOperationException(message);
+    public void setValue(String name, double[] src) {
+        if (src.length == 1) setValue(name, src[0]);
+        else genericSetValue(name, src);
+    }
+
+    @Override
+    public void setValue(String name, int[] src) {
+        if (src.length == 1) setValue(name, src[0]);
+        else genericSetValue(name, src);
+    }
+
+    @Override
+    public void setValue(String name, String[] src) {
+        if (src.length ==1) setValue(name, src[0]);
+        else genericSetValue(name, src);
     }
 
     private String[] toString(Access[] a) {
@@ -179,7 +198,6 @@ public class BMIComponent implements BMI {
         }
         return s;
     }
-
 
     @Override
     public String getVarType(String name) {
