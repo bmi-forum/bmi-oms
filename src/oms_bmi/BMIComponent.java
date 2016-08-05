@@ -46,12 +46,9 @@ public class BMIComponent implements BMI {
         comp = new ComponentAccess(omscomp);
     }
 
-
     public static BMI create(Object comp) {
-
         return new BMIComponent(comp);
     }
-
 
     @Override
     public void initialize(String config_file) {
@@ -88,18 +85,15 @@ public class BMIComponent implements BMI {
         throw new UnsupportedOperationException(message);
     }
 
-
     @Override
     public void update() {
         ComponentAccess.callAnnotated(comp.getComponent(), Execute.class, false);
     }
 
-
     @Override
     public void finalize() {
         ComponentAccess.callAnnotated(comp.getComponent(), Finalize.class, true);
     }
-
 
     @Override
     public String getComponentName() {
@@ -108,18 +102,15 @@ public class BMIComponent implements BMI {
         return n != null ? n.value() : "<none>";
     }
 
-
     @Override
     public int getInputVarNameCount() {
         return comp.inputs().size();
     }
 
-
     @Override
     public int getOutputVarNameCount() {
         return comp.outputs().size();
     }
-
 
     @Override
     public String[] getInputVarNames() {
@@ -127,13 +118,11 @@ public class BMIComponent implements BMI {
         return toString(a);
     }
 
-
     @Override
     public String[] getOutputVarNames() {
         Access[] a = comp.outputs().toArray(new Access[0]);
         return toString(a);
     }
-
 
     @SuppressWarnings("unchecked")
     @Override
@@ -208,13 +197,10 @@ public class BMIComponent implements BMI {
         return a.getField().getType().toString();
     }
 
-
     @Override
     public int getVarItemsize(String name) {
-        // this is more involved here ... 
         throw new UnsupportedOperationException(message);
     }
-
 
     @Override
     public String getVarUnits(String name) {
@@ -225,7 +211,6 @@ public class BMIComponent implements BMI {
         Unit u = a.getField().getAnnotation(Unit.class);
         return u != null ? u.value() : "";
     }
-
 
     @Override
     public double getCurrentTime() {

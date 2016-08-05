@@ -19,7 +19,6 @@ public class Hamon_BMI implements BMI {
     public Calendar time;
     public double potET;
 
-
     @Override
     public void initialize(String config_file) {
         if (config_file != null) {
@@ -37,10 +36,8 @@ public class Hamon_BMI implements BMI {
     }
 
     private void setInputDate(final String date) {
-
         if (date.indexOf('T') != -1) setDateAndTime(date);
         else setDate(date);
-
     }
 
     private void setDateAndTime(final String date) {
@@ -90,42 +87,35 @@ public class Hamon_BMI implements BMI {
         potET *= 25.4;    //System.out.println("Update2");
     }
 
-
     @Override
     public void finalize() {
         System.out.println(potET);
     }
-
 
     @Override
     public String getComponentName() {
         return "Hamon";
     }
 
-
     @Override
     public int getInputVarNameCount() {
         return 3;
     }
-
 
     @Override
     public int getOutputVarNameCount() {
         return 1;
     }
 
-
     @Override
     public String[] getInputVarNames() {
         return new String[]{"temp", "daylen", "time"};
     }
 
-
     @Override
     public String[] getOutputVarNames() {
         return new String[]{"potET"};
     }
-
 
     @SuppressWarnings("unchecked")
     @Override
@@ -137,7 +127,6 @@ public class Hamon_BMI implements BMI {
         // }
         throw new UnsupportedOperationException();
     }
-
 
     @Override
     public void setValue(String name, double[] value) {
@@ -158,7 +147,6 @@ public class Hamon_BMI implements BMI {
         return "double";
     }
 
-
     @Override
     public String getVarUnits(String name) {
         if (name.equals("temp")) {
@@ -168,7 +156,6 @@ public class Hamon_BMI implements BMI {
         }
         return "Variable not present";
     }
-
 
     @Override
     public void initialize() {
@@ -337,4 +324,5 @@ public class Hamon_BMI implements BMI {
         // TODO Auto-generated method stub
         return 0;
     }
+
 }

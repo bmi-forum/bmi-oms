@@ -37,23 +37,19 @@ public class OMSComponent {
         this.comp = bmicomp;
     }
 
-
     public static OMSComponent create(BMI comp) {
         return new OMSComponent(comp);
     }
-
 
     @Initialize
     public void init(String conf_file) throws Exception {
         comp.initialize(conf_file);
     }
 
-
     @Execute
     public void run() throws Exception {
         comp.update();
     }
-
 
     @Finalize
     public void done() throws Exception {
