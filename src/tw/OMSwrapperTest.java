@@ -2,7 +2,7 @@ package tw;
 
 import org.junit.Test;
 
-import oms_bmi.OMSComponent;
+import wrappers.OMSComponent;
 
 public class OMSwrapperTest {
 

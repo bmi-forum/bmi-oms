@@ -16,21 +16,17 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with OMS.  If not, see <http://www.gnu.org/licenses/lgpl.txt>.
  */
-package oms_bmi;
+package wrappers;
 
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.IOException;
-import java.io.Reader;
 import java.lang.reflect.Field;
-import java.util.Properties;
 
 import edu.colorado.csdms.bmi.BMI;
-
+import edu.colorado.csdms.bmi.BmiBase;
 import oms3.Access;
 import oms3.ComponentAccess;
 import oms3.Conversions;
 import oms3.annotations.*;
+import wrappers.oms2bmImplementation.Oms2BmiBase;
 
 /**
  * BMI wrapper for an OMS component.
@@ -40,10 +36,12 @@ import oms3.annotations.*;
 public class BMIComponent implements BMI {
 
     ComponentAccess comp;
+    BmiBase bmibaseDelegate;
     String message = "Method not implemented yet";
 
     BMIComponent(Object omscomp) {
         comp = new ComponentAccess(omscomp);
+        bmibaseDelegate = new Oms2BmiBase(omscomp);
     }
 
     public static BMI create(Object comp) {
@@ -52,47 +50,32 @@ public class BMIComponent implements BMI {
 
     @Override
     public void initialize(String config_file) {
-        if (config_file != null) {
-            Reader r = null;
-            try {
-                r = new FileReader(config_file);
-            } catch(FileNotFoundException exception) {
-                System.out.println(exception.getMessage());
-            }
-
-            Properties p = new Properties();
-            try {
-                p.load(r);
-                for (String name : p.stringPropertyNames()) {
-                    Access a = comp.input(name);
-                    Object o = Conversions.convert(p.getProperty(name), a.getField().getType());
-                    a.setFieldValue(o);
-                }
-                r.close();
-            } catch(IOException exception) {
-                System.out.println(exception.getMessage());
-            } catch(Exception exception) {
-                System.out.println(exception.getMessage());
-            }
-
-        }
-        ComponentAccess.callAnnotated(comp.getComponent(), Initialize.class, true);
-
+        bmibaseDelegate.initialize(config_file);
     }
 
     @Override
     public void initialize() {
-        throw new UnsupportedOperationException(message);
+        bmibaseDelegate.initialize();
     }
 
     @Override
     public void update() {
-        ComponentAccess.callAnnotated(comp.getComponent(), Execute.class, false);
+        bmibaseDelegate.update();
+    }
+
+    @Override
+    public void updateUntil(double time) {
+        bmibaseDelegate.updateUntil(time);
+    }
+
+    @Override
+    public void updateFrac(double timeFrac) {
+        bmibaseDelegate.updateFrac(timeFrac);
     }
 
     @Override
     public void finalize() {
-        ComponentAccess.callAnnotated(comp.getComponent(), Finalize.class, true);
+        bmibaseDelegate.finalize();
     }
 
     @Override
@@ -278,11 +261,6 @@ public class BMIComponent implements BMI {
     }
 
     @Override
-    public void updateFrac(double timeFrac) {
-        throw new UnsupportedOperationException(message);
-    }
-
-    @Override
     public void setValueAtIndices(String varName, int[] indices, int[] src) {
         throw new UnsupportedOperationException(message);
     }
@@ -299,11 +277,6 @@ public class BMIComponent implements BMI {
 
     @Override
     public int[] getGridShape(int gridId) {
-        throw new UnsupportedOperationException(message);
-    }
-
-    @Override
-    public void updateUntil(double time) {
         throw new UnsupportedOperationException(message);
     }
 

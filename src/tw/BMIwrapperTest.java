@@ -11,7 +11,7 @@ import org.junit.Test;
 import static org.junit.Assert.assertEquals;
 
 import edu.colorado.csdms.bmi.BMI;
-import oms_bmi.BMIComponent;
+import wrappers.BMIComponent;
 
 /**
  *
