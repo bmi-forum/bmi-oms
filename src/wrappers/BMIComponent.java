@@ -37,12 +37,16 @@ public class BMIComponent implements BMI {
     ComponentAccess comp;
     BmiBase bmibaseDelegate;
     BmiGetter bmigetterDelegate;
+
+    BmiInfo bmiinfoDelegate;
     String message = "Method not implemented yet";
 
     BMIComponent(Object omscomp) {
         comp = new ComponentAccess(omscomp);
         bmibaseDelegate = new Oms2BmiBase(omscomp);
         bmigetterDelegate = new Oms2BmiGetter(omscomp);
+
+        bmiinfoDelegate = new Oms2BmiInfo(omscomp);
     }
 
     public static BMI create(Object comp) {
@@ -167,31 +171,27 @@ public class BMIComponent implements BMI {
 
     @Override
     public String getComponentName() {
-
-        Name n = comp.getComponent().getClass().getAnnotation(Name.class);
-        return n != null ? n.value() : "<none>";
+        return bmiinfoDelegate.getComponentName();
     }
 
     @Override
     public String[] getInputVarNames() {
-        Access[] a = comp.inputs().toArray(new Access[0]);
-        return toString(a);
+        return bmiinfoDelegate.getInputVarNames();
     }
 
     @Override
     public int getInputVarNameCount() {
-        return comp.inputs().size();
+        return bmiinfoDelegate.getInputVarNameCount();
     }
 
     @Override
     public String[] getOutputVarNames() {
-        Access[] a = comp.outputs().toArray(new Access[0]);
-        return toString(a);
+        return bmiinfoDelegate.getOutputVarNames();
     }
 
     @Override
     public int getOutputVarNameCount() {
-        return comp.outputs().size();
+        return bmiinfoDelegate.getOutputVarNameCount();
     }
 
     // BMI SETTER
@@ -313,14 +313,6 @@ public class BMIComponent implements BMI {
     @Override
     public int getVarGrid(String varName) {
         throw new UnsupportedOperationException(message);
-    }
-
-    private String[] toString(Access[] a) {
-        String[] s = new String[a.length];
-        for (int i = 0; i < a.length; i++) {
-            s[i] = a[i].getField().getName();
-        }
-        return s;
     }
 
 }
