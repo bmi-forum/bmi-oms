@@ -102,20 +102,74 @@ public class BMIComponent implements BMI {
     // BMI GRID
 
     @Override
+    public int getGridRank(int gridId) {
+        throw new UnsupportedOperationException(message);
+    }
+
+    @Override
+    public int getGridSize(int gridId) {
+        throw new UnsupportedOperationException(message);
+    }
+
+    @Override
+    public String getGridType(final int gridId) {
+        throw new UnsupportedOperationException(message);
+    }
+
+    // BMI GRID RECTILINEAR
+    // BMI GRID STRUCTURED QUAD
+
+    @Override
+    public int[] getGridShape(int gridId) {
+        throw new UnsupportedOperationException(message);
+    }
+
+    @Override
+    public double[] getGridX(int gridId) {
+        throw new UnsupportedOperationException(message);
+    }
+
+    @Override
+    public double[] getGridY(int gridId) {
+        throw new UnsupportedOperationException(message);
+    }
+
+    @Override
+    public double[] getGridZ(int gridId) {
+        throw new UnsupportedOperationException(message);
+    }
+
+    // BMI GRID UNIFORM RECTILINEAR
+
+    @Override
+    public double[] getGridSpacing(int gridId) {
+        throw new UnsupportedOperationException(message);
+    }
+
+    @Override
+    public double[] getGridOrigin(int gridId) {
+        throw new UnsupportedOperationException(message);
+    }
+
+    // BMI GRID UNSTRUCTURED
+
+    @Override
+    public int[] getGridConnectivity(int gridId) {
+        throw new UnsupportedOperationException(message);
+    }
+
+    @Override
+    public int[] getGridOffset(int gridId) {
+        throw new UnsupportedOperationException(message);
+    }
+
+    // BMI INFO
+
+    @Override
     public String getComponentName() {
 
         Name n = comp.getComponent().getClass().getAnnotation(Name.class);
         return n != null ? n.value() : "<none>";
-    }
-
-    @Override
-    public int getInputVarNameCount() {
-        return comp.inputs().size();
-    }
-
-    @Override
-    public int getOutputVarNameCount() {
-        return comp.outputs().size();
     }
 
     @Override
@@ -125,10 +179,22 @@ public class BMIComponent implements BMI {
     }
 
     @Override
+    public int getInputVarNameCount() {
+        return comp.inputs().size();
+    }
+
+    @Override
     public String[] getOutputVarNames() {
         Access[] a = comp.outputs().toArray(new Access[0]);
         return toString(a);
     }
+
+    @Override
+    public int getOutputVarNameCount() {
+        return comp.outputs().size();
+    }
+
+    // BMI SETTER
 
     private void genericSetValue(String name, Object src) {
         Access a = comp.input(name);
@@ -171,45 +237,30 @@ public class BMIComponent implements BMI {
         else genericSetValue(name, src);
     }
 
-    private String[] toString(Access[] a) {
-        String[] s = new String[a.length];
-        for (int i = 0; i < a.length; i++) {
-            s[i] = a[i].getField().getName();
-        }
-        return s;
-    }
-
     @Override
-    public String getVarType(String name) {
-        Access a = comp.output(name);
-        if (a == null) {
-            throw new IllegalArgumentException("No such name " + name);
-        }
-        return a.getField().getType().toString();
-    }
-
-    @Override
-    public int getVarItemsize(String name) {
+    public void setValueAtIndices(String varName, int[] indices, double[] src) {
         throw new UnsupportedOperationException(message);
     }
 
     @Override
-    public String getVarUnits(String name) {
-        Access a = comp.output(name);
-        if (a == null) {
-            throw new IllegalArgumentException("No such name " + name);
-        }
-        Unit u = a.getField().getAnnotation(Unit.class);
-        return u != null ? u.value() : "";
+    public void setValueAtIndices(String varName, int[] indices, int[] src) {
+        throw new UnsupportedOperationException(message);
+    }
+
+    @Override
+    public void setValueAtIndices(String varName, int[] indices, String[] src) {
+        throw new UnsupportedOperationException(message);
+    }
+
+    // BMI TIME
+
+    @Override
+    public double getStartTime() {
+        throw new UnsupportedOperationException(message);
     }
 
     @Override
     public double getCurrentTime() {
-        throw new UnsupportedOperationException(message);
-    }
-
-    @Override
-    public double getStartTime() {
         throw new UnsupportedOperationException(message);
     }
 
@@ -228,68 +279,29 @@ public class BMIComponent implements BMI {
         throw new UnsupportedOperationException(message);
     }
 
+    // BMI VARS
+
     @Override
-    public String getGridType(final int gridId) {
-        throw new UnsupportedOperationException(message);
+    public String getVarType(String name) {
+        Access a = comp.output(name);
+        if (a == null) {
+            throw new IllegalArgumentException("No such name " + name);
+        }
+        return a.getField().getType().toString();
     }
 
     @Override
-    public int[] getGridConnectivity(int gridId) {
-        throw new UnsupportedOperationException(message);
+    public String getVarUnits(String name) {
+        Access a = comp.output(name);
+        if (a == null) {
+            throw new IllegalArgumentException("No such name " + name);
+        }
+        Unit u = a.getField().getAnnotation(Unit.class);
+        return u != null ? u.value() : "";
     }
 
     @Override
-    public double[] getGridX(int gridId) {
-        throw new UnsupportedOperationException(message);
-    }
-
-    @Override
-    public double[] getGridY(int gridId) {
-        throw new UnsupportedOperationException(message);
-    }
-
-    @Override
-    public double[] getGridZ(int gridId) {
-        throw new UnsupportedOperationException(message);
-    }
-
-    @Override
-    public int[] getGridOffset(int gridId) {
-        throw new UnsupportedOperationException(message);
-    }
-
-    @Override
-    public int getGridRank(int gridId) {
-        throw new UnsupportedOperationException(message);
-    }
-
-    @Override
-    public int getGridSize(int gridId) {
-        throw new UnsupportedOperationException(message);
-    }
-
-    @Override
-    public void setValueAtIndices(String varName, int[] indices, int[] src) {
-        throw new UnsupportedOperationException(message);
-    }
-
-    @Override
-    public void setValueAtIndices(String varName, int[] indices, double[] src) {
-        throw new UnsupportedOperationException(message);
-    }
-
-    @Override
-    public void setValueAtIndices(String varName, int[] indices, String[] src) {
-        throw new UnsupportedOperationException(message);
-    }
-
-    @Override
-    public int[] getGridShape(int gridId) {
-        throw new UnsupportedOperationException(message);
-    }
-
-    @Override
-    public int getVarGrid(String varName) {
+    public int getVarItemsize(String name) {
         throw new UnsupportedOperationException(message);
     }
 
@@ -299,13 +311,16 @@ public class BMIComponent implements BMI {
     }
 
     @Override
-    public double[] getGridOrigin(int gridId) {
+    public int getVarGrid(String varName) {
         throw new UnsupportedOperationException(message);
     }
 
-    @Override
-    public double[] getGridSpacing(int gridId) {
-        throw new UnsupportedOperationException(message);
+    private String[] toString(Access[] a) {
+        String[] s = new String[a.length];
+        for (int i = 0; i < a.length; i++) {
+            s[i] = a[i].getField().getName();
+        }
+        return s;
     }
 
 }
