@@ -20,13 +20,12 @@ package wrappers;
 
 import java.lang.reflect.Field;
 
-import edu.colorado.csdms.bmi.BMI;
-import edu.colorado.csdms.bmi.BmiBase;
+import edu.colorado.csdms.bmi.*;
 import oms3.Access;
 import oms3.ComponentAccess;
 import oms3.Conversions;
 import oms3.annotations.*;
-import wrappers.oms2bmImplementation.Oms2BmiBase;
+import wrappers.oms2bmImplementation.*;
 
 /**
  * BMI wrapper for an OMS component.
@@ -37,16 +36,20 @@ public class BMIComponent implements BMI {
 
     ComponentAccess comp;
     BmiBase bmibaseDelegate;
+    BmiGetter bmigetterDelegate;
     String message = "Method not implemented yet";
 
     BMIComponent(Object omscomp) {
         comp = new ComponentAccess(omscomp);
         bmibaseDelegate = new Oms2BmiBase(omscomp);
+        bmigetterDelegate = new Oms2BmiGetter(omscomp);
     }
 
     public static BMI create(Object comp) {
         return new BMIComponent(comp);
     }
+
+    // BMI BASE
 
     @Override
     public void initialize(String config_file) {
@@ -78,6 +81,26 @@ public class BMIComponent implements BMI {
         bmibaseDelegate.finalize();
     }
 
+    // BMI GETTERS
+
+    @SuppressWarnings("unchecked")
+    @Override
+    public Object getValue(String varName) {
+        return bmigetterDelegate.getValue(varName);
+    }
+
+    @Override
+    public <T> T getValueRef(String varName) {
+        return bmigetterDelegate.getValueRef(varName);
+    }
+
+    @Override
+    public <T> T getValueAtIndices(String varName, int[] indices) {
+        return bmigetterDelegate.getValueAtIndices(varName, indices);
+    }
+
+    // BMI GRID
+
     @Override
     public String getComponentName() {
 
@@ -105,21 +128,6 @@ public class BMIComponent implements BMI {
     public String[] getOutputVarNames() {
         Access[] a = comp.outputs().toArray(new Access[0]);
         return toString(a);
-    }
-
-    @SuppressWarnings("unchecked")
-    @Override
-    public Object getValue(String name) {
-        Access a = comp.output(name);
-        Object returningObject = null;
-
-        try {
-            returningObject = a.getField().get(comp.getComponent());
-        } catch (IllegalAccessException exception) {
-            System.out.println(exception.getMessage());
-        }
-
-        return returningObject;
     }
 
     private void genericSetValue(String name, Object src) {
@@ -277,16 +285,6 @@ public class BMIComponent implements BMI {
 
     @Override
     public int[] getGridShape(int gridId) {
-        throw new UnsupportedOperationException(message);
-    }
-
-    @Override
-    public <T> T getValueRef(String varName) {
-        throw new UnsupportedOperationException(message);
-    }
-
-    @Override
-    public <T> T getValueAtIndices(String varName, int[] indices) {
         throw new UnsupportedOperationException(message);
     }
 
