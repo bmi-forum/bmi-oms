@@ -61,32 +61,31 @@ public class Oms2BmiBase implements BmiBase {
     @Override
     public void initialize(String fileName) {
 
-        if (fileName != null) {
-            Reader reader = readerFactory(fileName);
+        Reader reader = readerFactory(fileName);
+        Properties properties = new Properties();
 
-            Properties properties = new Properties();
-            try {
-                properties.load(reader);
-                for (String propertyName : properties.stringPropertyNames()) {
-                    Access access = omsComponent.input(propertyName);
-                    Object object = Conversions.convert(properties.getProperty(propertyName), access.getField().getType());
-                    access.setFieldValue(object);
-                }
-                reader.close();
-            } catch(IOException exception) {
-                System.out.println(exception.getMessage());
-            } catch(Exception exception) {
-                System.out.println(exception.getMessage());
+        try {
+            properties.load(reader);
+            for (String propertyName : properties.stringPropertyNames()) {
+                Access access = omsComponent.input(propertyName);
+                Object from = properties.getProperty(propertyName);
+                Class<?> to = access.getField().getType();
+                Object object = Conversions.convert(from, to);
+                access.setFieldValue(object);
             }
-
+            reader.close();
+            ComponentAccess.callAnnotated(omsComponent.getComponent(), Initialize.class, true);
+        } catch(IOException exception) {
+            System.out.println(exception.getMessage());
+        } catch(Exception exception) {
+            System.out.println(exception.getMessage());
         }
-        ComponentAccess.callAnnotated(omsComponent.getComponent(), Initialize.class, true);
 
     }
 
     @Override
     public void initialize() {
-        throw new UnsupportedOperationException(message);
+        ComponentAccess.callAnnotated(omsComponent.getComponent(), Initialize.class, true);
     }
 
     @Override
