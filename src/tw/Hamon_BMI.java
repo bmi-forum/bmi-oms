@@ -10,10 +10,6 @@ import edu.colorado.csdms.bmi.BMI;
 
 public class Hamon_BMI implements BMI {
 
-    final static int[] DAYS = {
-        31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31
-    };
-
     public static double temp;
     public static double daylen;
     public Calendar time;
@@ -48,13 +44,13 @@ public class Hamon_BMI implements BMI {
 
         if (timeVec.length < 3)
             time = new GregorianCalendar(Integer.parseInt(dateVec[0]),
-                                         Integer.parseInt(dateVec[1]),
+                                         Integer.parseInt(dateVec[1])-1,
                                          Integer.parseInt(dateVec[2]),
                                          Integer.parseInt(timeVec[0]),
                                          Integer.parseInt(timeVec[1]));
         else
             time = new GregorianCalendar(Integer.parseInt(dateVec[0]),
-                                         Integer.parseInt(dateVec[1]),
+                                         Integer.parseInt(dateVec[1])-1,
                                          Integer.parseInt(dateVec[2]),
                                          Integer.parseInt(timeVec[0]),
                                          Integer.parseInt(timeVec[1]),
@@ -66,18 +62,18 @@ public class Hamon_BMI implements BMI {
 
          String[] dateVec = date.split("-");
          time = new GregorianCalendar(Integer.parseInt(dateVec[0]),
-                                      Integer.parseInt(dateVec[1]),
+                                      Integer.parseInt(dateVec[1])-1,
                                       Integer.parseInt(dateVec[2]));
 
     }
 
     @Override
     public void update() {
-        int month = time.get(Calendar.MONTH);
 
         double Wt = 4.95 * Math.exp(0.062 * temp) / 100.;
         double D2 = (daylen / 12.0) * (daylen / 12.0);
-        potET = 0.55 * DAYS[month] * D2 * Wt;
+        int daysInMonth = time.getActualMaximum(Calendar.DAY_OF_MONTH);
+        potET = 0.55 * daysInMonth * D2 * Wt;
         if (potET <= 0.0) {
             potET = 0.0;
         }
