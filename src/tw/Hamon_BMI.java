@@ -44,13 +44,13 @@ public class Hamon_BMI implements BMI {
 
         if (timeVec.length < 3)
             time = new GregorianCalendar(Integer.parseInt(dateVec[0]),
-                                         Integer.parseInt(dateVec[1])-1,
+                                         Integer.parseInt(dateVec[1])-1, // Numbering of the month starts from 0
                                          Integer.parseInt(dateVec[2]),
                                          Integer.parseInt(timeVec[0]),
                                          Integer.parseInt(timeVec[1]));
         else
             time = new GregorianCalendar(Integer.parseInt(dateVec[0]),
-                                         Integer.parseInt(dateVec[1])-1,
+                                         Integer.parseInt(dateVec[1])-1, // Numbering of the month starts from 0
                                          Integer.parseInt(dateVec[2]),
                                          Integer.parseInt(timeVec[0]),
                                          Integer.parseInt(timeVec[1]),
@@ -62,7 +62,7 @@ public class Hamon_BMI implements BMI {
 
          String[] dateVec = date.split("-");
          time = new GregorianCalendar(Integer.parseInt(dateVec[0]),
-                                      Integer.parseInt(dateVec[1])-1,
+                                      Integer.parseInt(dateVec[1])-1, // Numbering of the month starts from 0
                                       Integer.parseInt(dateVec[2]));
 
     }
