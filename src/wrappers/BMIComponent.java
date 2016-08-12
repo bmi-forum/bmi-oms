@@ -18,12 +18,10 @@
  */
 package wrappers;
 
-import java.lang.reflect.Field;
 
 import edu.colorado.csdms.bmi.*;
 import oms3.Access;
 import oms3.ComponentAccess;
-import oms3.Conversions;
 import oms3.annotations.*;
 import wrappers.oms2bmImplementation.*;
 
@@ -39,6 +37,7 @@ public class BMIComponent implements BMI {
     BmiGetter bmigetterDelegate;
 
     BmiInfo bmiinfoDelegate;
+    BmiSetter bmisetterDelegate;
     String message = "Method not implemented yet";
 
     BMIComponent(Object omscomp) {
@@ -47,6 +46,7 @@ public class BMIComponent implements BMI {
         bmigetterDelegate = new Oms2BmiGetter(omscomp);
 
         bmiinfoDelegate = new Oms2BmiInfo(omscomp);
+        bmisetterDelegate = new Oms2BmiSetter(omscomp);
     }
 
     public static BMI create(Object comp) {
@@ -196,60 +196,34 @@ public class BMIComponent implements BMI {
 
     // BMI SETTER
 
-    private void genericSetValue(String name, Object src) {
-        Access a = comp.input(name);
-
-        try {
-            Field field = a.getField();
-            field.set(comp.getComponent(), Conversions.convert(src, a.getField().getType()));
-        } catch (IllegalAccessException exception) {
-            System.out.println(exception.getMessage());
-        }
-    }
-
-    private void setValue(String name, double src) {
-        genericSetValue(name, src);
-    }
-
-    private void setValue(String name, int src) {
-        genericSetValue(name, src);
-    }
-
-    private void setValue(String name, String src) {
-        genericSetValue(name, src);
-    }
-
     @Override
     public void setValue(String name, double[] src) {
-        if (src.length == 1) setValue(name, src[0]);
-        else genericSetValue(name, src);
+        bmisetterDelegate.setValue(name, src);
     }
 
     @Override
     public void setValue(String name, int[] src) {
-        if (src.length == 1) setValue(name, src[0]);
-        else genericSetValue(name, src);
+        bmisetterDelegate.setValue(name, src);
     }
 
     @Override
     public void setValue(String name, String[] src) {
-        if (src.length ==1) setValue(name, src[0]);
-        else genericSetValue(name, src);
+        bmisetterDelegate.setValue(name, src);
     }
 
     @Override
     public void setValueAtIndices(String varName, int[] indices, double[] src) {
-        throw new UnsupportedOperationException(message);
+        bmisetterDelegate.setValueAtIndices(varName, indices, src);
     }
 
     @Override
     public void setValueAtIndices(String varName, int[] indices, int[] src) {
-        throw new UnsupportedOperationException(message);
+        bmisetterDelegate.setValueAtIndices(varName, indices, src);
     }
 
     @Override
     public void setValueAtIndices(String varName, int[] indices, String[] src) {
-        throw new UnsupportedOperationException(message);
+        bmisetterDelegate.setValueAtIndices(varName, indices, src);
     }
 
     // BMI TIME
