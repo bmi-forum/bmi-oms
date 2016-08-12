@@ -38,6 +38,7 @@ public class BMIComponent implements BMI {
 
     BmiInfo bmiinfoDelegate;
     BmiSetter bmisetterDelegate;
+    BmiTime bmitimeDelegate;
     String message = "Method not implemented yet";
 
     BMIComponent(Object omscomp) {
@@ -47,6 +48,7 @@ public class BMIComponent implements BMI {
 
         bmiinfoDelegate = new Oms2BmiInfo(omscomp);
         bmisetterDelegate = new Oms2BmiSetter(omscomp);
+        bmitimeDelegate = new Oms2BmiTime(omscomp);
     }
 
     public static BMI create(Object comp) {
@@ -230,27 +232,27 @@ public class BMIComponent implements BMI {
 
     @Override
     public double getStartTime() {
-        throw new UnsupportedOperationException(message);
+        return bmitimeDelegate.getStartTime();
     }
 
     @Override
     public double getCurrentTime() {
-        throw new UnsupportedOperationException(message);
+        return bmitimeDelegate.getCurrentTime();
     }
 
     @Override
     public double getEndTime() {
-        throw new UnsupportedOperationException(message);
+        return bmitimeDelegate.getEndTime();
     }
 
     @Override
     public double getTimeStep() {
-        throw new UnsupportedOperationException(message);
+        return bmitimeDelegate.getTimeStep();
     }
 
     @Override
     public String getTimeUnits() {
-        throw new UnsupportedOperationException(message);
+        return bmitimeDelegate.getTimeUnits();
     }
 
     // BMI VARS
