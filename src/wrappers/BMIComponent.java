@@ -20,9 +20,7 @@ package wrappers;
 
 
 import edu.colorado.csdms.bmi.*;
-import oms3.Access;
 import oms3.ComponentAccess;
-import oms3.annotations.*;
 import wrappers.oms2bmImplementation.*;
 
 /**
@@ -39,6 +37,7 @@ public class BMIComponent implements BMI {
     BmiInfo bmiinfoDelegate;
     BmiSetter bmisetterDelegate;
     BmiTime bmitimeDelegate;
+    BmiVars bmivarsDelegate;
     String message = "Method not implemented yet";
 
     BMIComponent(Object omscomp) {
@@ -49,6 +48,7 @@ public class BMIComponent implements BMI {
         bmiinfoDelegate = new Oms2BmiInfo(omscomp);
         bmisetterDelegate = new Oms2BmiSetter(omscomp);
         bmitimeDelegate = new Oms2BmiTime(omscomp);
+        bmivarsDelegate = new Oms2BmiVars(omscomp);
     }
 
     public static BMI create(Object comp) {
@@ -259,36 +259,27 @@ public class BMIComponent implements BMI {
 
     @Override
     public String getVarType(String name) {
-        Access a = comp.output(name);
-        if (a == null) {
-            throw new IllegalArgumentException("No such name " + name);
-        }
-        return a.getField().getType().toString();
+        return bmivarsDelegate.getVarType(name);
     }
 
     @Override
     public String getVarUnits(String name) {
-        Access a = comp.output(name);
-        if (a == null) {
-            throw new IllegalArgumentException("No such name " + name);
-        }
-        Unit u = a.getField().getAnnotation(Unit.class);
-        return u != null ? u.value() : "";
+        return getVarUnits(name);
     }
 
     @Override
     public int getVarItemsize(String name) {
-        throw new UnsupportedOperationException(message);
+        return bmivarsDelegate.getVarItemsize(name);
     }
 
     @Override
     public int getVarNbytes(String varName) {
-        throw new UnsupportedOperationException(message);
+        return bmivarsDelegate.getVarNbytes(varName);
     }
 
     @Override
     public int getVarGrid(String varName) {
-        throw new UnsupportedOperationException(message);
+        return bmivarsDelegate.getVarGrid(varName);
     }
 
 }
