@@ -27,7 +27,7 @@ public class Hamon_OMS2BMI {
 
         bmi.setValue("temp", 25.3);
         bmi.setValue("daylen", 8);
-        bmi.setValue("time", "04-03-2014");
+        bmi.setValue("time", "2014-03-04");
 
         bmi.initialize(null);
         bmi.update();
