@@ -8,6 +8,7 @@ package tw;
 import bmi.BMI;
 import java.util.Arrays;
 import oms_bmi.BMIComponent;
+import org.junit.Test;
 
 /**
  *
@@ -15,7 +16,8 @@ import oms_bmi.BMIComponent;
  */
 public class Hamon_OMS2BMI {
 
-    public static void main(String[] args) throws Exception {
+    @Test
+    public void oms2bmi() throws Exception {
 
         BMI bmi = BMIComponent.create(new Hamon_OMS());
 
