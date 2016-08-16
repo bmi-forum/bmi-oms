@@ -20,8 +20,8 @@ package wrappers;
 
 
 import edu.colorado.csdms.bmi.*;
-import oms3.ComponentAccess;
 import wrappers.oms2bmImplementation.*;
+import wrappers.oms2bmImplementation.grid.*;
 
 /**
  * BMI wrapper for an OMS component.
@@ -30,10 +30,9 @@ import wrappers.oms2bmImplementation.*;
  */
 public class BMIComponent implements BMI {
 
-    ComponentAccess comp;
     BmiBase bmibaseDelegate;
     BmiGetter bmigetterDelegate;
-
+    BmiGrid bmigridDelegate;
     BmiInfo bmiinfoDelegate;
     BmiSetter bmisetterDelegate;
     BmiTime bmitimeDelegate;
@@ -41,18 +40,44 @@ public class BMIComponent implements BMI {
     String message = "Method not implemented yet";
 
     BMIComponent(Object omscomp) {
-        comp = new ComponentAccess(omscomp);
+        bmiAllocations(omscomp);
+    }
+
+    BMIComponent(Object omscomp, String gridType) {
+        bmiAllocations(omscomp);
+        bmigridDelegate = createBmiGrid(gridType, omscomp);
+    }
+
+    private void bmiAllocations(Object omscomp) {
         bmibaseDelegate = new Oms2BmiBase(omscomp);
         bmigetterDelegate = new Oms2BmiGetter(omscomp);
-
         bmiinfoDelegate = new Oms2BmiInfo(omscomp);
         bmisetterDelegate = new Oms2BmiSetter(omscomp);
         bmitimeDelegate = new Oms2BmiTime(omscomp);
         bmivarsDelegate = new Oms2BmiVars(omscomp);
     }
 
+    private Oms2BmiGrid createBmiGrid(String gridType, final Object omscomp) {
+        if (gridType.equals("rectilinear")) {
+            return new Oms2BmiGridRectilinear(omscomp);
+        } else if (gridType.equals("structuredQuad")) {
+            return new Oms2BmiGridStructuredQuad(omscomp);
+        } else if (gridType.equals("uniformRectilinear")) {
+            return new Oms2BmiGridUniformRectilinear(omscomp);
+        } else if (gridType.equals("unstructured")) {
+            return new Oms2BmiGridUnstructured(omscomp);
+        }
+
+        throw new UnsupportedOperationException(gridType + " doesn't exist");
+
+    }
+
     public static BMI create(Object comp) {
         return new BMIComponent(comp);
+    }
+
+    public static BMI create(Object comp, String gridType) {
+        return new BMIComponent(comp, gridType);
     }
 
     // BMI BASE
@@ -109,64 +134,104 @@ public class BMIComponent implements BMI {
 
     @Override
     public int getGridRank(int gridId) {
-        throw new UnsupportedOperationException(message);
+        return bmigridDelegate.getGridRank(gridId);
     }
 
     @Override
     public int getGridSize(int gridId) {
-        throw new UnsupportedOperationException(message);
+        return bmigridDelegate.getGridSize(gridId);
     }
 
     @Override
     public String getGridType(final int gridId) {
-        throw new UnsupportedOperationException(message);
+        return bmigridDelegate.getGridType(gridId);
     }
-
-    // BMI GRID RECTILINEAR
-    // BMI GRID STRUCTURED QUAD
 
     @Override
     public int[] getGridShape(int gridId) {
-        throw new UnsupportedOperationException(message);
+        if (bmigridDelegate instanceof BmiGridRectilinear)
+            return ((BmiGridRectilinear) bmigridDelegate).getGridShape(gridId);
+        else if (bmigridDelegate instanceof BmiGridStructuredQuad)
+            return ((BmiGridStructuredQuad) bmigridDelegate).getGridShape(gridId);
+        else if (bmigridDelegate instanceof BmiGridUniformRectilinear)
+            return ((BmiGridUniformRectilinear) bmigridDelegate).getGridShape(gridId);
+
+        else
+            throw new UnsupportedOperationException();
     }
 
     @Override
     public double[] getGridX(int gridId) {
-        throw new UnsupportedOperationException(message);
+        if (bmigridDelegate instanceof BmiGridRectilinear)
+            return ((BmiGridRectilinear) bmigridDelegate).getGridX(gridId);
+        else if (bmigridDelegate instanceof BmiGridStructuredQuad)
+            return ((BmiGridStructuredQuad) bmigridDelegate).getGridX(gridId);
+        else if (bmigridDelegate instanceof BmiGridUnstructured)
+            return ((BmiGridUnstructured) bmigridDelegate).getGridX(gridId);
+
+        else
+            throw new UnsupportedOperationException();
+
     }
 
     @Override
     public double[] getGridY(int gridId) {
-        throw new UnsupportedOperationException(message);
+        if (bmigridDelegate instanceof BmiGridRectilinear)
+            return ((BmiGridRectilinear) bmigridDelegate).getGridY(gridId);
+        else if (bmigridDelegate instanceof BmiGridStructuredQuad)
+            return ((BmiGridStructuredQuad) bmigridDelegate).getGridY(gridId);
+        else if (bmigridDelegate instanceof BmiGridUnstructured)
+            return ((BmiGridUnstructured) bmigridDelegate).getGridY(gridId);
+
+        else
+            throw new UnsupportedOperationException();
+
     }
 
     @Override
     public double[] getGridZ(int gridId) {
-        throw new UnsupportedOperationException(message);
-    }
+        if (bmigridDelegate instanceof BmiGridRectilinear)
+            return ((BmiGridRectilinear) bmigridDelegate).getGridZ(gridId);
+        else if (bmigridDelegate instanceof BmiGridStructuredQuad)
+            return ((BmiGridStructuredQuad) bmigridDelegate).getGridZ(gridId);
+        else if (bmigridDelegate instanceof BmiGridUnstructured)
+            return ((BmiGridUnstructured) bmigridDelegate).getGridZ(gridId);
 
-    // BMI GRID UNIFORM RECTILINEAR
+        else
+            throw new UnsupportedOperationException();
+
+    }
 
     @Override
     public double[] getGridSpacing(int gridId) {
-        throw new UnsupportedOperationException(message);
+        if (bmigridDelegate instanceof BmiGridUniformRectilinear)
+            return ((BmiGridUniformRectilinear) bmigridDelegate).getGridSpacing(gridId);
+
+        else throw new UnsupportedOperationException();
     }
 
     @Override
     public double[] getGridOrigin(int gridId) {
-        throw new UnsupportedOperationException(message);
-    }
+        if (bmigridDelegate instanceof BmiGridUniformRectilinear)
+            return ((BmiGridUniformRectilinear) bmigridDelegate).getGridSpacing(gridId);
 
-    // BMI GRID UNSTRUCTURED
+        else throw new UnsupportedOperationException();
+    }
 
     @Override
     public int[] getGridConnectivity(int gridId) {
-        throw new UnsupportedOperationException(message);
+        if (bmigridDelegate instanceof BmiGridUnstructured)
+            return ((BmiGridUnstructured) bmigridDelegate).getGridConnectivity(gridId);
+
+        else throw new UnsupportedOperationException();
     }
 
     @Override
     public int[] getGridOffset(int gridId) {
-        throw new UnsupportedOperationException(message);
+        if (bmigridDelegate instanceof BmiGridUnstructured)
+            return ((BmiGridUnstructured) bmigridDelegate).getGridOffset(gridId);
+
+        else throw new UnsupportedOperationException();
     }
 
     // BMI INFO
